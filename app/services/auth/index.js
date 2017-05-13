@@ -1,18 +1,19 @@
 import JWT from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import moment from 'moment';
 
 export class Authenticate {
     static authorize(person) {
         return JWT.sign({
-            exp: 1440,
-            ...person,
+            exp: moment().add(1, 'hour').unix(),
+            ...person.attributes,
         }, process.env.SECRET);
     }
 
     static verify(token) {
         return new Promise((resolve, reject) =>
             JWT.verify(token, process.env.SECRET, (err, decoded) => {
-                if (err) reject(err);
+                if (err) return reject(err);
                 resolve(decoded);
             }));
     }

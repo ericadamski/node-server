@@ -1,5 +1,7 @@
 import { Router } from 'express';
 
+import { Authenticate } from '../../../app/services';
+
 import people from './people';
 import tokens from './tokens';
 
@@ -12,17 +14,21 @@ _protected.use(async (req, res, next) => {
     if (!authorization)
         return res.status(403).json(error('Forbidden'));
 
-    const token = authorization.split(' ')[0];
+    const token = authorization.split(' ')[1];
 
     if (!token)
         res.status(403).json(error('Forbidden'));
 
-    const authorized = await Authenticate.verify(token);
-
-    console.log(authorized);
+    try {
+        req.authorizedUser = await Authenticate.verify(token);
+        next();
+    } catch (e) {
+        res.status(500).send(e);
+    }
 });
 
 _protected.use('/people', people);
+
 router.use('/tokens', tokens);
 
 export default router;
