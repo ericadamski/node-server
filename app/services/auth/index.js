@@ -1,6 +1,17 @@
 import JWT from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import moment from 'moment';
+import passport from 'passport';
+import BearerStrategy from 'passport-http-bearer';
+
+passport.use(new BearerStrategy((token, done) => {
+    Authenticate.verify(token)
+        .then(person => {
+            if (!person) return done(null, false);
+            return done(null, person, { scope: 'all' });
+        })
+        .catch(done);
+}));
 
 export class Authenticate {
     static authorize(person) {

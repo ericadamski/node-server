@@ -1,6 +1,7 @@
 import Express  from 'express';
 import path from 'path';
 // var favicon = require('serve-favicon');
+import passport from 'passport';
 import logger from 'morgan';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
@@ -16,6 +17,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(Express.static(path.join(__dirname, 'public')));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/', routes, (req, res, next) => {
     console.log(`Initial route: ${req.originalUrl}`);
