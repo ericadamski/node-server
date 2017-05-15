@@ -5,6 +5,10 @@ dotenv.load();
 import Knex from 'knex';
 import Bookshelf from 'bookshelf';
 
+/* plugins */
+import paranoia from 'bookshelf-paranoia';
+/***********/
+
 const _db = Bookshelf(Knex({
     debug: process.env.NODE_ENV === 'debug',
     client: process.env.DB_CLIENT,
@@ -17,5 +21,6 @@ const _db = Bookshelf(Knex({
     },
 }));
 
+_db.plugin(paranoia);
 
 export const DB = _db;

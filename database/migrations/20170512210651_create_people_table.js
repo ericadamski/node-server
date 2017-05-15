@@ -6,6 +6,7 @@ exports.up = function(knex, Promise) {
         table.string('email').unique();
         table.string('password');
         table.timestamps();
+        table.dateTime('deleted_at').nullable();
     });
 };
 

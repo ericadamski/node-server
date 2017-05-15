@@ -31,6 +31,7 @@ exports.seed = function(knex, Promise) {
                             id: index + 1,
                             name: `${user.fname} ${user.lname}`,
                             email: `${user.fname}.${user.lname}@mb3online.com`.toLowerCase(),
+                            created_at: new Date(),
                             password,
                         });
                     });
